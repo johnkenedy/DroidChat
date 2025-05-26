@@ -28,7 +28,7 @@ import br.com.ada.droidchat.ui.theme.DroidChatTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(onTimeout: () -> Boolean) {
+fun SplashScreen(onTimeout: () -> Unit) {
     LaunchedEffect(Unit) {
         delay(2000)
         onTimeout()
