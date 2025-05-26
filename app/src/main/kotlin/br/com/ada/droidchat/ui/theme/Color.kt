@@ -26,6 +26,6 @@ val BackgroundGradient = Brush.verticalGradient(
     colors = listOf(
         Color.White,
         Color(0xFF1E1E1E),
-        Turquoise20
+        Turquoise80
     ),
 )

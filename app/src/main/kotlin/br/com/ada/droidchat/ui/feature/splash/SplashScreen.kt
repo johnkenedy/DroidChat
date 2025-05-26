@@ -10,10 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,14 +25,14 @@ import androidx.compose.ui.unit.dp
 import br.com.ada.droidchat.R
 import br.com.ada.droidchat.ui.theme.BackgroundGradient
 import br.com.ada.droidchat.ui.theme.DroidChatTheme
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashRoute() {
-    SplashScreen()
-}
-
-@Composable
-fun SplashScreen() {
+fun SplashScreen(onTimeout: () -> Boolean) {
+    LaunchedEffect(Unit) {
+        delay(2000)
+        onTimeout()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,6 +73,6 @@ fun SplashScreen() {
 @Composable
 private fun SplashScreenPreview() {
     DroidChatTheme {
-        SplashScreen()
+        SplashScreen(onTimeout = { false })
     }
 }
