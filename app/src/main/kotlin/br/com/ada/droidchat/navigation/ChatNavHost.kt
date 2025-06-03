@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import br.com.ada.droidchat.ui.feature.signin.SignInScreen
 import br.com.ada.droidchat.ui.feature.splash.SplashScreen
 
 @Composable
@@ -17,8 +18,8 @@ fun ChatNavHost(
         backStack = appNavigator.backStack,
         onBack = { appNavigator.onBack() },
         entryProvider = entryProvider {
-            entry<SplashRoute> { SplashScreen(onTimeout = { appNavigator.navigateToSignIn(true) }) }
-            entry<SignInRoute> { Text("Sign In") }
+            entry<SplashRoute> { SplashScreen(onNavigateToSignIn = { appNavigator.navigateToSignIn(true) }) }
+            entry<SignInRoute> { SignInScreen() }
             entry<SignUpRoute> { Text("Sign Up") }
         }
     )
