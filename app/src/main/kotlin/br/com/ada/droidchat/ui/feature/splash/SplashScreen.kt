@@ -17,8 +17,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,10 +28,10 @@ import br.com.ada.droidchat.ui.theme.DroidChatTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(onTimeout: () -> Unit) {
+fun SplashScreen(onNavigateToSignIn: () -> Unit) {
     LaunchedEffect(Unit) {
         delay(2000)
-        onTimeout()
+        onNavigateToSignIn()
     }
     Column(
         modifier = Modifier
@@ -58,9 +58,8 @@ fun SplashScreen(onTimeout: () -> Unit) {
 
             Spacer(Modifier.width(10.dp))
 
-            val context = LocalContext.current
             Text(
-                text = context.getString(R.string.splash_safety_info),
+                text = stringResource(R.string.splash_safety_info),
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium
@@ -73,6 +72,6 @@ fun SplashScreen(onTimeout: () -> Unit) {
 @Composable
 private fun SplashScreenPreview() {
     DroidChatTheme {
-        SplashScreen(onTimeout = { false })
+        SplashScreen(onNavigateToSignIn = { false })
     }
 }
