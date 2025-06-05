@@ -24,8 +24,8 @@ val ColorError = Color(0xFFF24E1E)
 
 val BackgroundGradient = Brush.verticalGradient(
     colors = listOf(
-        Color.White,
-        Color(0xFF1E1E1E),
-        Turquoise80
-    ),
+        Color(0xFF000000),
+        Color(0xFF090909),
+        Color(0xFF0C0C0C)
+        ),
 )
