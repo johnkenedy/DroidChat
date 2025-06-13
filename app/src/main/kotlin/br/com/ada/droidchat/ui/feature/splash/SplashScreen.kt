@@ -28,10 +28,15 @@ import br.com.ada.droidchat.ui.theme.DroidChatTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(onNavigateToSignIn: () -> Unit) {
+fun SplashRoute() {
+    SplashScreen()
+}
+
+@Composable
+fun SplashScreen() {
     LaunchedEffect(Unit) {
-        delay(2000)
-        onNavigateToSignIn()
+        delay(1000)
+//        onNavigateToSignIn()
     }
     Column(
         modifier = Modifier
@@ -72,6 +77,6 @@ fun SplashScreen(onNavigateToSignIn: () -> Unit) {
 @Composable
 private fun SplashScreenPreview() {
     DroidChatTheme {
-        SplashScreen(onNavigateToSignIn = { false })
+        SplashScreen()
     }
 }
