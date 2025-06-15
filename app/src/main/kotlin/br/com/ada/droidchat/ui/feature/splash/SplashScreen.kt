@@ -28,8 +28,9 @@ import br.com.ada.droidchat.ui.theme.DroidChatTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashRoute() {
+fun SplashRoute(onNavigateToSignIn: () -> Unit) {
     SplashScreen()
+    onNavigateToSignIn()
 }
 
 @Composable
