@@ -53,7 +53,7 @@ fun SignInScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(R.drawable.logo),
+            painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo"
         )
 
@@ -64,34 +64,36 @@ fun SignInScreen(
             onValueChange = {
                 onFormEvent(SignInFormEvent.EmailChanged(it))
                             },
-            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.spacing_medium)),
-            placeholder = stringResource(R.string.feature_login_email),
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.spacing_medium)),
+            placeholder = stringResource(id = R.string.feature_login_email),
             leadingIcon = R.drawable.ic_envelope,
-            keyboardType = KeyboardType.Email
+            keyboardType = KeyboardType.Email,
+            errorMessage = formState.emailError?.let { stringResource(id = it) }
         )
 
-        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.spacing_small)))
+        Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.spacing_small)))
 
         PrimaryTextField(
             value = formState.password,
             onValueChange = {
                 onFormEvent(SignInFormEvent.PasswordChanged(it))
             },
-            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.spacing_medium)),
-            placeholder = stringResource(R.string.feature_login_password),
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.spacing_medium)),
+            placeholder = stringResource(id = R.string.feature_login_password),
             leadingIcon = R.drawable.ic_lock,
             keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Done,
+            errorMessage = formState.passwordError?.let { stringResource(id = it) }
         )
 
-        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_extra_large)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
 
         PrimaryButton(
-            text = stringResource(R.string.feature_login_button),
+            text = stringResource(id = R.string.feature_login_button),
             onClick = {
                onFormEvent(SignInFormEvent.Submit)
             },
-            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.spacing_medium)),
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.spacing_medium)),
             isLoading = formState.isLoading
         )
 
