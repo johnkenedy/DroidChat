@@ -19,7 +19,7 @@ fun ChatNavHost(
         onBack = { appNavigator.onBack() },
         entryProvider = entryProvider {
             entry<SplashRoute> { SplashRoute(onNavigateToSignIn = { appNavigator.navigateToSignIn(true) }) }
-            entry<SignInRoute> { SignInRoute() }
+            entry<SignInRoute> { SignInRoute(navigateToSignUp = { appNavigator.navigateToSignUp() }) }
             entry<SignUpRoute> { Text("Sign Up") }
         }
     )
