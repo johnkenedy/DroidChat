@@ -8,7 +8,6 @@ import br.com.ada.droidchat.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-//ADICIONANDO VARIOS ESTILOS
 @HiltViewModel
 class SignInViewModel @Inject constructor() : ViewModel() {
 
