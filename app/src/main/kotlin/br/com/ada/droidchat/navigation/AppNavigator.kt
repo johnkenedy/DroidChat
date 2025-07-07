@@ -6,7 +6,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 
 @Stable
 class AppNavigator {
-    val backStack: SnapshotStateList<Any> = mutableStateListOf(SplashRoute)
+    val backStack: SnapshotStateList<Any> = mutableStateListOf(NavKey.SplashRoute)
 
     fun onBack() {
         backStack.removeLastOrNull()
@@ -14,21 +14,21 @@ class AppNavigator {
 
     fun navigateToSignIn(clearSplash: Boolean = false) {
         if (clearSplash) {
-            backStack.remove(SplashRoute)
+            backStack.remove(NavKey.SplashRoute)
         }
-        if (backStack.lastOrNull() != SignInRoute) {
-            backStack.add(SignInRoute)
+        if (backStack.lastOrNull() != NavKey.SignInRoute) {
+            backStack.add(NavKey.SignInRoute)
         }
     }
 
     fun navigateToSignUp() {
-        if (backStack.lastOrNull() != SignUpRoute) {
-            backStack.add(SignUpRoute)
+        if (backStack.lastOrNull() != NavKey.SignUpRoute) {
+            backStack.add(NavKey.SignUpRoute)
         }
     }
 
     fun navigateToHomeAndClearStack() {
         backStack.clear()
-        backStack.add(SplashRoute)
+        backStack.add(NavKey.SplashRoute)
     }
 }

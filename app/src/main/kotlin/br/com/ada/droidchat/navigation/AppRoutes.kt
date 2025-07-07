@@ -3,11 +3,14 @@ package br.com.ada.droidchat.navigation
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
-@Serializable
-object SplashRoute : NavKey
+sealed interface NavKey : NavKey {
+    @Serializable
+    object SplashRoute
 
-@Serializable
-object SignInRoute : NavKey
+    @Serializable
+    object SignInRoute
 
-@Serializable
-object SignUpRoute : NavKey
+    @Serializable
+    object SignUpRoute
+}
+
