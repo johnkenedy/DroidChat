@@ -1,6 +1,6 @@
 package br.com.ada.droidchat.navigation
 
-import androidx.compose.material3.Text
+import SignUpRoute
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.entry
@@ -18,9 +18,9 @@ fun ChatNavHost(
         backStack = appNavigator.backStack,
         onBack = { appNavigator.onBack() },
         entryProvider = entryProvider {
-            entry<SplashRoute> { SplashRoute(onNavigateToSignIn = { appNavigator.navigateToSignIn(true) }) }
-            entry<SignInRoute> { SignInRoute(navigateToSignUp = { appNavigator.navigateToSignUp() }) }
-            entry<SignUpRoute> { Text("Sign Up") }
+            entry<NavKey.SplashRoute> { SplashRoute(onNavigateToSignIn = { appNavigator.navigateToSignIn(true) }) }
+            entry<NavKey.SignInRoute> { SignInRoute(navigateToSignUp = { appNavigator.navigateToSignUp() }) }
+            entry<NavKey.SignUpRoute> { SignUpRoute() }
         }
     )
 
