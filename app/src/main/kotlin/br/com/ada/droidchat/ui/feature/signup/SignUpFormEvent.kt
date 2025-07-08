@@ -1,0 +1,16 @@
+package br.com.ada.droidchat.ui.feature.signup
+
+import android.net.Uri
+
+sealed interface SignUpFormEvent {
+    data class ProfilePhotoUriChanged(val uri: Uri) : SignUpFormEvent
+    data class FirstNameChanged(val firstName: String) : SignUpFormEvent
+    data class LastNameChanged(val lastName: String) : SignUpFormEvent
+    data class EmailChanged(val email: String) : SignUpFormEvent
+    data class PasswordChanged(val password: String) : SignUpFormEvent
+    data class ConfirmPasswordChanged(val confirmPassword: String) : SignUpFormEvent
+
+    data object OpenProfilePictureModal : SignUpFormEvent
+    data object CloseProfilePictureModal : SignUpFormEvent
+    data object Submit : SignUpFormEvent
+}
