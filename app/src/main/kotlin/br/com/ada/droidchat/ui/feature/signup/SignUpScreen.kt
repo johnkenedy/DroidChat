@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -129,10 +130,6 @@ fun SignUpUpScreen(
 
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
 
-                    val extraTextStringResId = if (formState.password.isNotEmpty() && formState.password == formState.confirmPassword) {
-                       R.string.feature_sign_up_passwords_match
-                    } else null
-
                     SecondaryTextField(
                         label = stringResource(id = R.string.feature_sign_up_password),
                         value = formState.password,
@@ -140,7 +137,7 @@ fun SignUpUpScreen(
                             onFormEvent(SignUpFormEvent.PasswordChanged(it))
                         },
                         keyboardType = KeyboardType.Password,
-                        extraText = extraTextStringResId?.let { stringResource(id = it) }
+                        extraText = formState.passwordExtraText?.let { stringResource(id = it) }
                     )
 
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
@@ -152,7 +149,7 @@ fun SignUpUpScreen(
                             onFormEvent(SignUpFormEvent.ConfirmPasswordChanged(it))
                         },
                         keyboardType = KeyboardType.Password,
-                        extraText = extraTextStringResId?.let { stringResource(id = it) },
+                        extraText = formState.passwordExtraText?.let { stringResource(id = it) },
                         imeAction = ImeAction.Done
                     )
 
@@ -178,7 +175,7 @@ fun SignUpUpScreen(
                             sheetState.hide()
                         }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
-                               onFormEvent(SignUpFormEvent.CloseProfilePictureModal)
+                                onFormEvent(SignUpFormEvent.CloseProfilePictureModal)
                             }
                         }
                     },
