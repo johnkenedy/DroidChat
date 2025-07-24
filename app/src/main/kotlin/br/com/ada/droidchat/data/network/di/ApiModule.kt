@@ -15,7 +15,7 @@ import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import jakarta.inject.Singleton
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 
 @Module

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.ada.droidchat.R
 import br.com.ada.droidchat.ui.components.PrimaryButton
@@ -42,9 +43,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpRoute(
-    viewModel: SignUpViewModel = viewModel {
-        SignUpViewModel(SignUpFormValidator())
-    }
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val formState = viewModel.formState
     SignUpUpScreen(
