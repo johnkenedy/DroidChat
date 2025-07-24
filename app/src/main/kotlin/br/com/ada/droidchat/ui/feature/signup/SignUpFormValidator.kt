@@ -4,8 +4,9 @@ import br.com.ada.droidchat.R
 import br.com.ada.droidchat.ui.validator.EmailValidator
 import br.com.ada.droidchat.ui.validator.FormValidator
 import br.com.ada.droidchat.ui.validator.PasswordValidator
+import javax.inject.Inject
 
-class SignUpFormValidator : FormValidator<SignUpFormState> {
+class SignUpFormValidator @Inject constructor() : FormValidator<SignUpFormState> {
 
     override fun validate(formState: SignUpFormState): SignUpFormState {
         val isFirstNameValid = formState.firstName.isNotEmpty() && !formState.firstName.any { it.isDigit() } && formState.firstName.length > 2
