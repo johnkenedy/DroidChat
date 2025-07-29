@@ -8,10 +8,8 @@ import androidx.lifecycle.viewModelScope
 import br.com.ada.droidchat.R
 import br.com.ada.droidchat.data.repository.AuthRepository
 import br.com.ada.droidchat.model.CreateAccount
-import br.com.ada.droidchat.model.NetworkException
 import br.com.ada.droidchat.ui.validator.FormValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.ktor.client.plugins.ClientRequestException
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -79,25 +77,22 @@ class SignUpViewModel @Inject constructor(
         if (isValidForm()) {
             formState = formState.copy(isLoading = true)
             viewModelScope.launch {
-                try {
-                    authRepository.signUp(
-                        createAccount = CreateAccount(
-                            username = formState.email,
-                            password = formState.password,
-                            firstName = formState.firstName,
-                            lastName = formState.lastName,
-                            profilePictureId = null
-                        )
+                authRepository.signUp(
+                    createAccount = CreateAccount(
+                        username = formState.email,
+                        password = formState.password,
+                        firstName = formState.firstName,
+                        lastName = formState.lastName,
+                        profilePictureId = null
                     )
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    if (e is NetworkException.ApiException) {
-                        e.statusCode
-                        // show error message
-                    } else {
-                        // show generic error
+                ).fold(
+                    onSuccess = {
+                        formState = formState.copy(isLoading = false)
+                    },
+                    onFailure = {
+                        formState = formState.copy(isLoading = false)
                     }
-                }
+                )
             }
         }
     }

@@ -59,7 +59,6 @@ object ApiModule {
                         NetworkException.ApiException(errorMessage, cause.response.status.value)
                     } else {
                         NetworkException.UnknowNetworkException(cause)
-
                     }
                 }
             }
