@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.ada.droidchat.R
 import br.com.ada.droidchat.data.repository.AuthRepository
 import br.com.ada.droidchat.model.CreateAccount
+import br.com.ada.droidchat.model.NetworkException
 import br.com.ada.droidchat.ui.validator.FormValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -87,10 +88,23 @@ class SignUpViewModel @Inject constructor(
                     )
                 ).fold(
                     onSuccess = {
-                        formState = formState.copy(isLoading = false)
+                        formState = formState.copy(
+                            isLoading = false,
+                            isSignedUp = true
+                        )
                     },
                     onFailure = {
-                        formState = formState.copy(isLoading = false)
+                        formState = formState.copy(
+                            isLoading = false,
+                            apiErrorMessageResId = if (it is NetworkException.ApiException) {
+                                when (it.statusCode) {
+                                    400 -> R.string.error_message_api_form_validation_failed
+                                    409 -> R.string.error_message_user_with_username_already_exists
+
+                                    else -> R.string.common_generic_error_message
+                                }
+                            } else R.string.common_generic_error_message
+                        )
                     }
                 )
             }
@@ -101,6 +115,10 @@ class SignUpViewModel @Inject constructor(
         return !formValidator.validate(formState).also {
             formState = it
         }.hasError
+    }
+
+    fun errorMessageShown() {
+        formState = formState.copy(apiErrorMessageResId = null)
     }
 
 }

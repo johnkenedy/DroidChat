@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +29,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.ada.droidchat.R
 import br.com.ada.droidchat.ui.components.PrimaryButton
 import br.com.ada.droidchat.ui.components.ProfilePictureOptionsModalBottomSheet
@@ -35,7 +36,6 @@ import br.com.ada.droidchat.ui.components.ProfilePictureSelector
 import br.com.ada.droidchat.ui.components.SecondaryTextField
 import br.com.ada.droidchat.ui.feature.signup.SignUpFormEvent
 import br.com.ada.droidchat.ui.feature.signup.SignUpFormState
-import br.com.ada.droidchat.ui.feature.signup.SignUpFormValidator
 import br.com.ada.droidchat.ui.feature.signup.SignUpViewModel
 import br.com.ada.droidchat.ui.theme.BackgroundGradient
 import br.com.ada.droidchat.ui.theme.DroidChatTheme
@@ -50,6 +50,10 @@ fun SignUpRoute(
         formState = formState,
         onFormEvent = viewModel::onFormEvent
     )
+
+    formState.apiErrorMessageResId?.let { resId ->
+        AlertDialog(viewModel, resId)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -176,7 +180,8 @@ fun SignUpUpScreen(
                         text = stringResource(id = R.string.feature_sign_up_button),
                         onClick = {
                             onFormEvent(SignUpFormEvent.Submit)
-                        }
+                        },
+                        isLoading = formState.isLoading
                     )
                 }
             }
@@ -202,6 +207,39 @@ fun SignUpUpScreen(
             }
         }
     }
+}
+
+@Composable
+private fun AlertDialog(
+    viewModel: SignUpViewModel,
+    resId: Int
+) {
+    AlertDialog(
+        onDismissRequest = { viewModel::errorMessageShown },
+        confirmButton = {
+            TextButton(
+                onClick = { viewModel::errorMessageShown }
+            ) {
+                Text(
+                    text = stringResource(R.string.common_ok)
+                )
+            }
+        },
+        title = {
+            Text(
+                text = stringResource(R.string.common_generic_error_title)
+            )
+        },
+        text = {
+            Text(
+                text = stringResource(resId),
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.surface,
+        titleContentColor = MaterialTheme.colorScheme.onSurface,
+        textContentColor = MaterialTheme.colorScheme.onSurface
+    )
 }
 
 @Preview

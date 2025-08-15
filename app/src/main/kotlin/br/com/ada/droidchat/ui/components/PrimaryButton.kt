@@ -104,24 +104,23 @@ fun PrimaryButton(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        val textAlpha = remember { Animatable(0f) } // Start transparent
+                        val textAlpha = remember { Animatable(0f) }
 
                         LaunchedEffect(Unit) {
                             textAlpha.animateTo(
                                 targetValue = 1f,
                                 animationSpec = tween(
-                                    durationMillis = 300, // Duration of the fade-in
-                                    delayMillis = 200    // The delay BEFORE the animation starts
+                                    durationMillis = 300,
+                                    delayMillis = 200
                                 )
                             )
                         }
 
                         Text(
                             text = loadingText,
-
                             color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.labelLarge,
-                            modifier = Modifier.graphicsLayer(alpha = textAlpha.value) // Apply animated alpha
+                            modifier = Modifier.graphicsLayer(alpha = textAlpha.value)
                         )
                     }
                 } else {
