@@ -1,8 +1,6 @@
 package br.com.ada.droidchat.ui.feature.signup
 
-import android.content.Context
 import android.net.Uri
-import androidx.compose.runtime.CompositionContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,18 +11,16 @@ import br.com.ada.droidchat.data.repository.AuthRepository
 import br.com.ada.droidchat.model.CreateAccount
 import br.com.ada.droidchat.model.NetworkException
 import br.com.ada.droidchat.ui.validator.FormValidator
-import br.com.ada.droidchat.util.image.ImageCompressor
+import br.com.ada.droidchat.util.image.ImageCompressorImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
-import java.net.URI
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val formValidator: FormValidator<SignUpFormState>,
     private val authRepository: AuthRepository,
-    @ApplicationContext private val context: Context
+    private val imageCompressor: ImageCompressorImpl
 ) : ViewModel() {
 
     var formState by mutableStateOf(SignUpFormState())
@@ -77,7 +73,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 formState = formState.copy(isCompressingImage = true)
-                val compressedFile = ImageCompressor.compressAndResizeImage(context, uri)
+                val compressedFile = imageCompressor.compressAndResizeImage(imageUri = uri)
                 formState = formState.copy(profilePictureUri = Uri.fromFile(compressedFile))
             } catch (e: Exception) {
 
