@@ -1,5 +1,8 @@
 package br.com.ada.droidchat.ui.feature.signup
 
+import android.content.Context
+import android.net.Uri
+import androidx.compose.runtime.CompositionContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,15 +11,20 @@ import androidx.lifecycle.viewModelScope
 import br.com.ada.droidchat.R
 import br.com.ada.droidchat.data.repository.AuthRepository
 import br.com.ada.droidchat.model.CreateAccount
+import br.com.ada.droidchat.model.NetworkException
 import br.com.ada.droidchat.ui.validator.FormValidator
+import br.com.ada.droidchat.util.image.ImageCompressor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import java.net.URI
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val formValidator: FormValidator<SignUpFormState>,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     var formState by mutableStateOf(SignUpFormState())
@@ -26,6 +34,7 @@ class SignUpViewModel @Inject constructor(
         when (event) {
             is SignUpFormEvent.ProfilePhotoUriChanged -> {
                 formState = formState.copy(profilePictureUri = event.uri)
+                compressImageAndUpdateState(event.uri)
             }
 
             is SignUpFormEvent.FirstNameChanged -> {
@@ -64,6 +73,20 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    private fun compressImageAndUpdateState(uri: Uri) {
+        viewModelScope.launch {
+            try {
+                formState = formState.copy(isCompressingImage = true)
+                val compressedFile = ImageCompressor.compressAndResizeImage(context, uri)
+                formState = formState.copy(profilePictureUri = Uri.fromFile(compressedFile))
+            } catch (e: Exception) {
+
+            } finally {
+                formState = formState.copy(isCompressingImage = false)
+            }
+        }
+    }
+
     private fun updatePasswordExtraText() {
         formState = formState.copy(
             passwordExtraText =
@@ -77,19 +100,35 @@ class SignUpViewModel @Inject constructor(
         if (isValidForm()) {
             formState = formState.copy(isLoading = true)
             viewModelScope.launch {
-                try {
-                    authRepository.signUp(
-                        createAccount = CreateAccount(
-                            username = formState.email,
-                            password = formState.password,
-                            firstName = formState.firstName,
-                            lastName = formState.lastName,
-                            profilePictureId = null
-                        )
+                authRepository.signUp(
+                    createAccount = CreateAccount(
+                        username = formState.email,
+                        password = formState.password,
+                        firstName = formState.firstName,
+                        lastName = formState.lastName,
+                        profilePictureId = null
                     )
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                ).fold(
+                    onSuccess = {
+                        formState = formState.copy(
+                            isLoading = false,
+                            isSignedUp = true
+                        )
+                    },
+                    onFailure = {
+                        formState = formState.copy(
+                            isLoading = false,
+                            apiErrorMessageResId = if (it is NetworkException.ApiException) {
+                                when (it.statusCode) {
+                                    400 -> R.string.error_message_api_form_validation_failed
+                                    409 -> R.string.error_message_user_with_username_already_exists
+
+                                    else -> R.string.common_generic_error_message
+                                }
+                            } else R.string.common_generic_error_message
+                        )
+                    }
+                )
             }
         }
     }
@@ -98,6 +137,10 @@ class SignUpViewModel @Inject constructor(
         return !formValidator.validate(formState).also {
             formState = it
         }.hasError
+    }
+
+    fun errorMessageShown() {
+        formState = formState.copy(apiErrorMessageResId = null)
     }
 
 }
