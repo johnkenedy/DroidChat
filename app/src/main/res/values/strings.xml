@@ -5,6 +5,7 @@
     <string name="common_generic_error_message">Tente novamente ou reporte um problema</string>
     <string name="common_ok">OK</string>
     <string name="common_add_profile_photo">Adicionar foto de perfil</string>
+    <string name="common_add_profile_photo_optimizing">Otimizando…</string>
     <string name="common_take_photo">Tirar foto</string>
     <string name="common_upload_photo">Galeria</string>
     <string name="common_silly_click">Clique se for bobo</string>
@@ -16,6 +17,8 @@
     <string name="error_message_password_invalid">Senha deve conter pelo menos uma letra e número</string>
     <string name="error_message_password_confirmation_invalid">Confirmação de senha não corresponde</string>
     <string name="error_message_email_invalid">E-mail inválido</string>
+    <string name="error_message_api_form_validation_failed">Erro de validação de formulário, confira os dados e tente novamente</string>
+
 
     <string name="feature_login_email">E-mail</string>
     <string name="feature_login_password">Senha</string>
