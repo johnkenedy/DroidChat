@@ -3,13 +3,10 @@ package br.com.ada.droidchat.data.network
 import br.com.ada.droidchat.data.network.model.AuthRequest
 import br.com.ada.droidchat.data.network.model.CreateAccountRequest
 import br.com.ada.droidchat.data.network.model.TokenResponse
-import br.com.ada.droidchat.model.NetworkException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.resources.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
 import javax.inject.Inject
 
 class NetworkDataSourceImpl @Inject constructor(
