@@ -96,13 +96,36 @@ class SignUpViewModel @Inject constructor(
         if (isValidForm()) {
             formState = formState.copy(isLoading = true)
             viewModelScope.launch {
+                var profilePictureId: Int? = null
+                var errorWhenUploadingProfilePicture = false
+
+                formState.profilePictureUri?.path?.let { path ->
+                    authRepository.uploadProfilePicture(path).fold(
+                        onSuccess = { image ->
+                            profilePictureId = image.id
+                        },
+                        onFailure = {
+                            formState = formState.copy(
+                                isLoading = false,
+                                profilePictureUri = null,
+                                apiErrorMessageResId = R.string.common_generic_error_message
+                            )
+                            errorWhenUploadingProfilePicture = true
+                        }
+                    )
+                }
+
+                if (errorWhenUploadingProfilePicture) {
+                    return@launch
+                }
+
                 authRepository.signUp(
                     createAccount = CreateAccount(
                         username = formState.email,
                         password = formState.password,
                         firstName = formState.firstName,
                         lastName = formState.lastName,
-                        profilePictureId = null
+                        profilePictureId = profilePictureId
                     )
                 ).fold(
                     onSuccess = {
@@ -133,6 +156,10 @@ class SignUpViewModel @Inject constructor(
         return !formValidator.validate(formState).also {
             formState = it
         }.hasError
+    }
+
+    fun successMessageShown() {
+        formState = formState.copy(isSignedUp = false)
     }
 
     fun errorMessageShown() {

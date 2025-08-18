@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.ada.droidchat.R
+import br.com.ada.droidchat.ui.components.AppDialog
 import br.com.ada.droidchat.ui.components.PrimaryButton
 import br.com.ada.droidchat.ui.components.ProfilePictureOptionsModalBottomSheet
 import br.com.ada.droidchat.ui.components.ProfilePictureSelector
@@ -43,7 +44,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpRoute(
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel = hiltViewModel(),
+    onSignUpSuccess: () -> Unit,
 ) {
     val formState = viewModel.formState
     SignUpUpScreen(
@@ -51,8 +53,27 @@ fun SignUpRoute(
         onFormEvent = viewModel::onFormEvent
     )
 
+    if (formState.isSignedUp) {
+        AppDialog(
+            onDismissRequest = {
+                viewModel::successMessageShown
+                onSignUpSuccess()
+            },
+            onConfirmButtonClick = {
+                viewModel::successMessageShown
+                onSignUpSuccess()
+            },
+            message = stringResource(id = R.string.feature_sign_up_success),
+        )
+    }
+
     formState.apiErrorMessageResId?.let { resId ->
-        AlertDialog(viewModel, resId)
+        AppDialog(
+            onDismissRequest = viewModel::errorMessageShown,
+            onConfirmButtonClick = viewModel::errorMessageShown,
+            message = stringResource(id = resId),
+            title = stringResource(id = R.string.common_generic_error_title)
+        )
     }
 }
 
@@ -208,39 +229,6 @@ fun SignUpUpScreen(
             }
         }
     }
-}
-
-@Composable
-private fun AlertDialog(
-    viewModel: SignUpViewModel,
-    resId: Int
-) {
-    AlertDialog(
-        onDismissRequest = { viewModel::errorMessageShown },
-        confirmButton = {
-            TextButton(
-                onClick = { viewModel::errorMessageShown }
-            ) {
-                Text(
-                    text = stringResource(R.string.common_ok)
-                )
-            }
-        },
-        title = {
-            Text(
-                text = stringResource(R.string.common_generic_error_title)
-            )
-        },
-        text = {
-            Text(
-                text = stringResource(resId),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.surface,
-        titleContentColor = MaterialTheme.colorScheme.onSurface,
-        textContentColor = MaterialTheme.colorScheme.onSurface
-    )
 }
 
 @Preview
