@@ -5,6 +5,7 @@ import br.com.ada.droidchat.data.network.NetworkDataSource
 import br.com.ada.droidchat.data.network.model.AuthRequest
 import br.com.ada.droidchat.data.network.model.CreateAccountRequest
 import br.com.ada.droidchat.model.CreateAccount
+import br.com.ada.droidchat.model.Image
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,7 +16,7 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
 
     override suspend fun signUp(createAccount: CreateAccount): Result<Unit> {
-        return withContext(ioDispatcher)  {
+        return withContext(ioDispatcher) {
             runCatching {
                 networkDataSource.signUp(
                     request = CreateAccountRequest(
@@ -31,11 +32,31 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signIn(username: String, password: String) {
-        networkDataSource.signIn(
-            request = AuthRequest(
-                username = username,
-                password = password
-            )
-        )
+        return withContext(ioDispatcher) {
+            runCatching {
+                networkDataSource.signIn(
+                    request = AuthRequest(
+                        username = username,
+                        password = password
+                    )
+                )
+            }
+        }
+    }
+
+    override suspend fun uploadProfilePicture(filePath: String): Result<Image> {
+        return withContext(ioDispatcher) {
+            runCatching {
+                val imageResponse = networkDataSource.uploadProfilePicture(filePath)
+
+                Image(
+                    id = imageResponse.id,
+                    name = imageResponse.name,
+                    type = imageResponse.type,
+                    url = imageResponse.url
+                )
+            }
+        }
+
     }
 }
