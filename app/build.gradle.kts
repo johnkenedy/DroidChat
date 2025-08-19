@@ -62,7 +62,7 @@ dependencies {
 
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.navigation3.runtime)
-//    implementation(libs.androidx.navigation3.viewmodel)
+    implementation(libs.androidx.navigation3.viewmodel)
     implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.coil.compose)
@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.ktor.client.auth)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.logging)
+    implementation(libs.exifinterface)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

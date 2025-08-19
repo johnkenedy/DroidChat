@@ -20,7 +20,7 @@ fun ChatNavHost(
         entryProvider = entryProvider {
             entry<NavKey.SplashRoute> { SplashRoute(onNavigateToSignIn = { appNavigator.navigateToSignIn(true) }) }
             entry<NavKey.SignInRoute> { SignInRoute(navigateToSignUp = { appNavigator.navigateToSignUp() }) }
-            entry<NavKey.SignUpRoute> { SignUpRoute() }
+            entry<NavKey.SignUpRoute> { SignUpRoute(onSignUpSuccess = { appNavigator.onBack() }) }
         }
     )
 
