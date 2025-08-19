@@ -12,5 +12,8 @@ sealed interface NavKey : NavKey {
 
     @Serializable
     object SignUpRoute
+
+    @Serializable
+    object HomeRoute
 }
 
