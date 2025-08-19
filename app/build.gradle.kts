@@ -62,7 +62,7 @@ dependencies {
 
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.navigation3.runtime)
-    implementation(libs.androidx.navigation3.viewmodel)
+//    implementation(libs.androidx.navigation3.viewmodel)
     implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.coil.compose)

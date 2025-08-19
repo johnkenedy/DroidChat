@@ -6,6 +6,7 @@ import br.com.ada.droidchat.data.network.model.AuthRequest
 import br.com.ada.droidchat.data.network.model.CreateAccountRequest
 import br.com.ada.droidchat.model.CreateAccount
 import br.com.ada.droidchat.model.Image
+import br.com.ada.droidchat.model.Token
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -31,15 +32,17 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun signIn(username: String, password: String) {
+    override suspend fun signIn(username: String, password: String): Result<Token> {
         return withContext(ioDispatcher) {
             runCatching {
-                networkDataSource.signIn(
+                val tokenResponse = networkDataSource.signIn(
                     request = AuthRequest(
                         username = username,
                         password = password
                     )
                 )
+
+                Token(token = tokenResponse.token)
             }
         }
     }
