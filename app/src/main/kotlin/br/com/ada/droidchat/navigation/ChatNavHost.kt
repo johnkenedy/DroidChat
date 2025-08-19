@@ -19,8 +19,9 @@ fun ChatNavHost(
         onBack = { appNavigator.onBack() },
         entryProvider = entryProvider {
             entry<NavKey.SplashRoute> { SplashRoute(onNavigateToSignIn = { appNavigator.navigateToSignIn(true) }) }
-            entry<NavKey.SignInRoute> { SignInRoute(navigateToSignUp = { appNavigator.navigateToSignUp() }) }
+            entry<NavKey.SignInRoute> { SignInRoute(navigateToSignUp = { appNavigator.navigateToSignUp() }, navigateToHome = { appNavigator.navigateToHomeAndClearStack() }) }
             entry<NavKey.SignUpRoute> { SignUpRoute(onSignUpSuccess = { appNavigator.onBack() }) }
+            entry<NavKey.HomeRoute> { Unit }
         }
     )
 

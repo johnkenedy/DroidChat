@@ -47,7 +47,8 @@ import kotlinx.coroutines.flow.collectLatest
 fun SignInRoute(
     viewModel: SignInViewModel = hiltViewModel(),
     context: Context = LocalContext.current,
-    navigateToSignUp: () -> Unit
+    navigateToSignUp: () -> Unit,
+    navigateToHome: () -> Unit,
 ) {
     val formState = viewModel.formState
 
@@ -58,7 +59,7 @@ fun SignInRoute(
         viewModel.signInAction.collectLatest { signInAction ->
             when (signInAction) {
                 SignInViewModel.SignInAction.Success -> {
-                    Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                    navigateToHome()
                 }
 
                 is SignInViewModel.SignInAction.Error -> {
